@@ -1,81 +1,58 @@
 # Minggu 1 — Mobile Development Ecosystem & Flutter Refresh
 
 ## Tujuan
-Memahami ekosistem pengembangan mobile (native, hybrid, cross-platform),
-arsitektur Flutter, peran Dart, widget tree, hot reload/restart,
-dan dasar Dart (null safety).
 
-## Fitur utama
-Aplikasi profil mahasiswa sederhana:
-- `AppBar` berjudul "Profil Mahasiswa"
-- Ikon `Icons.school` (size 72)
-- Teks nama: **Muhammad Aqil Azami**
-- Teks sub: "Pemrograman Mobile - Minggu 1"
+Mempelajari dasar pengembangan aplikasi mobile, ekosistem Flutter, bahasa Dart, widget tree, serta perbedaan hot reload dan hot restart.
 
-## Stack teknologi
-- Flutter 3.47.1 (stable)
-- Dart (null safety)
-- Material Design 3
+## Fitur Utama
 
-## Cara menjalankan
-```bash
-flutter pub get
-flutter run
-```
-Pastikan `flutter devices` menampilkan minimal satu target
-(emulator atau perangkat fisik dengan USB debugging).
+Membuat aplikasi profil mahasiswa sederhana dengan:
 
-## Hasil yang dicapai
-- Project Flutter pertama berjalan
-- Mengubah UI default menjadi profil mahasiswa
-- Memahami hot reload vs hot restart (lihat bawah)
-- Repository diinisialisasi & diunggah ke GitHub
+* AppBar "Profil Mahasiswa"
+* Ikon `Icons.school`
+* Nama mahasiswa
+* NIM
+* Program studi
+* Email
+* Widget `Card`, `Padding`, `Column`, `Row`, `Icon`, `Text`, dan `SizedBox`
+
+## Stack Teknologi
+
+* Flutter
+* Dart
+* Material Design 3
+* Git & GitHub
+
+## Hasil yang Dicapai
+
+* Berhasil membuat dan menjalankan project Flutter.
+* Mengubah tampilan default menjadi profil mahasiswa.
+* Menerapkan widget dasar Flutter.
+* Memahami dasar Dart dan null safety.
+* Memahami penggunaan hot reload dan hot restart.
 
 ## Hot Reload vs Hot Restart
-- **Hot reload**: menyuntikkan ulang source code yang berubah ke Dart VM,
-  lalu membangun ulang widget tree dari posisi state saat ini. State
-  (nilai variabel, halaman terbuka) **tetap utuh**. Cocok saat ubah tampilan
-  / layout kecil. Di terminal: tekan `r`.
-- **Hot restart**: mematikan & menjalankan ulang aplikasi dari awal, men-reset
-  seluruh state ke nilai awal. Dipakai bila perubahan menyentuh `initState`,
-  global variable, atau state tidak ke-update saat hot reload. Di terminal:
-  tekan `R` (kapital).
-- Praktikum: ubah ikon/teks lalu bandingkan — hot reload cepat & state tetap;
-  ubah nilai awal lalu hot restart untuk lihat reset.
 
-## Mini Assignment
-Aplikasi profil mahasiswa diperluas dengan widget dasar (tanpa package eksternal):
-- **NIM**: ditambah baris `Text('NIM: 244107020128')` di dalam `Row` + `Icon(Icons.badge)`.
-- **Info tambahan**: `Text('Teknik Informatika')` (Row + `Icon(Icons.computer)`),
-  serta email `muhaaqil6002@gmail.com` sebagai teks italic abu-abu.
-- **Widget dipakai**: `Card`, `Padding`, `Column`, `Row`, `SizedBox`, `Icon`, `Text`.
-- `AppBar` + `Icons.school` + nama tetap dipertahankan.
-- File: `lib/main.dart` (lihat body `Scaffold`).
+**Hot Reload** memperbarui perubahan kode tanpa menghilangkan state aplikasi yang sedang berjalan.
 
-## Kendala Setup
-Satu kendala nyata: **OneDrive memblokir proses build** (MSBuild/tooling
-Windows tidak bisa menulis ke dalam folder yang disinkronkan OneDrive).
-Akibatnya `flutter build` / `flutter run` tidak bisa dijalankan dari dalam
-folder `OneDrive/Documents/...` ini.
+**Hot Restart** menjalankan kembali aplikasi dari awal sehingga state kembali ke kondisi awal.
 
-Solusi jujur: source tetap di repo ini untuk version control & pengumpulan,
-sedangkan build/run dilakukan di folder di luar OneDrive (mis. `C:\flutter_course\week1`).
-Validasi yang berhasil di environment ini: `flutter analyze` → **No issues found!**
-Build/emulator belum dijalankan di sini karena keterbatasan tersebut di atas.
+## Kendala
 
-> Screenshot sudah di-capture via build web (`flutter build web` + headless
-> browser) karena Windows target terblokir OneDrive: `screenshots/profile.png`.
+![alt text](image.png)
+Kendala yang ditemukan selama praktikum adalah tidak bisa flutter run menggunakan windows.
 
-## Bukti visual
-- `screenshots/profile.png` — hasil aplikasi (render web target)
+## Refleksi
 
-## Catatan Keamanan & Git (sesuai instruksi minggu 1)
-- **Jangan mengunggah token atau kredensial.** `.gitignore` sudah mengecuali
-  `.env`, `*.token`, dan folder `build/`. Cek lagi sebelum commit:
-  ```bash
-  git status
-  ```
-- **Periksa `git status` sebelum commit** — pastikan tidak ada file rahasia
-  (`*.token`, `.env`, `firebase_options.dart.bak`) ikut ter-stage.
-- `build/` (hasil kompilasi) tidak di-commit; hanya source, README, refleksi,
-  dan screenshot.
+**1. Kapan native lebih tepat dipilih daripada cross-platform?**
+Native lebih cocok ketika aplikasi membutuhkan performa tinggi atau akses khusus terhadap fitur hardware dan sistem operasi.
+
+**2. Bagaimana perubahan state berhubungan dengan widget tree?**
+Perubahan state dapat menyebabkan widget yang berkaitan dibangun kembali sehingga tampilan UI menyesuaikan dengan kondisi terbaru.
+
+**3. Mengapa commit kecil dengan pesan yang jelas bermanfaat?**
+Commit kecil memudahkan pelacakan perubahan, debugging, dan membantu anggota tim memahami perkembangan project.
+
+## Kesimpulan
+
+Praktikum minggu pertama membantu memahami dasar Flutter, Dart, widget, serta proses awal dalam membuat aplikasi mobile menggunakan Flutter.
