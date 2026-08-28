@@ -39,8 +39,10 @@ Membuat aplikasi profil mahasiswa sederhana dengan:
 
 ## Kendala
 
-![alt text](image.png)
-Kendala yang ditemukan selama praktikum adalah tidak bisa flutter run menggunakan windows.
+![Kendala](screenshots/image.png)
+
+Kendala yang ditemukan selama praktikum adalah tidak bisa menjalankan
+`flutter run` menggunakan Windows.
 
 ## Refleksi
 
