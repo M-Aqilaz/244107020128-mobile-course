@@ -63,13 +63,19 @@ sedangkan build/run dilakukan di folder di luar OneDrive (mis. `C:\flutter_cours
 Validasi yang berhasil di environment ini: `flutter analyze` → **No issues found!**
 Build/emulator belum dijalankan di sini karena keterbatasan tersebut di atas.
 
-> GAP: screenshot hasil aplikasi belum di-capture (tidak ada emulator/display
-> di environment). Jalankan sendiri:
-> ```bash
-> cd 01-week-1-mobile-development-ecosystem-flutter-refresh
-> flutter run
-> ```
-> lalu screenshot ke `screenshots/profile.png`.
+> Screenshot sudah di-capture via build web (`flutter build web` + headless
+> browser) karena Windows target terblokir OneDrive: `screenshots/profile.png`.
 
 ## Bukti visual
-- `screenshots/` — capture hasil aplikasi di device/emulator
+- `screenshots/profile.png` — hasil aplikasi (render web target)
+
+## Catatan Keamanan & Git (sesuai instruksi minggu 1)
+- **Jangan mengunggah token atau kredensial.** `.gitignore` sudah mengecuali
+  `.env`, `*.token`, dan folder `build/`. Cek lagi sebelum commit:
+  ```bash
+  git status
+  ```
+- **Periksa `git status` sebelum commit** — pastikan tidak ada file rahasia
+  (`*.token`, `.env`, `firebase_options.dart.bak`) ikut ter-stage.
+- `build/` (hasil kompilasi) tidak di-commit; hanya source, README, refleksi,
+  dan screenshot.
