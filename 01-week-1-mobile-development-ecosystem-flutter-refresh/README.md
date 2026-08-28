@@ -28,8 +28,20 @@ Pastikan `flutter devices` menampilkan minimal satu target
 ## Hasil yang dicapai
 - Project Flutter pertama berjalan
 - Mengubah UI default menjadi profil mahasiswa
-- Memahami hot reload vs hot restart
+- Memahami hot reload vs hot restart (lihat bawah)
 - Repository diinisialisasi & diunggah ke GitHub
+
+## Hot Reload vs Hot Restart
+- **Hot reload**: menyuntikkan ulang source code yang berubah ke Dart VM,
+  lalu membangun ulang widget tree dari posisi state saat ini. State
+  (nilai variabel, halaman terbuka) **tetap utuh**. Cocok saat ubah tampilan
+  / layout kecil. Di terminal: tekan `r`.
+- **Hot restart**: mematikan & menjalankan ulang aplikasi dari awal, men-reset
+  seluruh state ke nilai awal. Dipakai bila perubahan menyentuh `initState`,
+  global variable, atau state tidak ke-update saat hot reload. Di terminal:
+  tekan `R` (kapital).
+- Praktikum: ubah ikon/teks lalu bandingkan — hot reload cepat & state tetap;
+  ubah nilai awal lalu hot restart untuk lihat reset.
 
 ## Mini Assignment
 Aplikasi profil mahasiswa diperluas dengan widget dasar (tanpa package eksternal):
