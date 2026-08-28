@@ -1,17 +1,24 @@
-# my_first_app
+# 244107020128-mobile-course
 
-A new Flutter project.
+Portfolio perkuliahan Pemrograman Mobile — 16 minggu.
 
-## Getting Started
+Satu repository pribadi mendokumentasikan progres selama satu semester.
+Setiap folder `NN-week-*` berisi README, kode (`lib/`), test (`test/`),
+dan bukti visual (`screenshots/`).
 
-This project is a starting point for a Flutter application.
+## Struktur
 
-A few resources to get you started if this is your first Flutter project:
+- `01-week-1-mobile-development-ecosystem-flutter-refresh/` — ekosistem mobile & Flutter refresh
+- `notes/` — reflections, learning-journal, resources
+- `portfolio-summary.md` — ringkasan akhir semester
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Cara menjalankan (umum)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+cd 01-week-1-mobile-development-ecosystem-flutter-refresh
+flutter pub get
+flutter run
+```
+
+> Catatan: build dilakukan di `C:\flutter_course\week1` (OneDrive memblokir MSBuild).
+> Source disini untuk version control & pengumpulan.
