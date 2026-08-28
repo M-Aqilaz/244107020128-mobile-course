@@ -31,5 +31,33 @@ Pastikan `flutter devices` menampilkan minimal satu target
 - Memahami hot reload vs hot restart
 - Repository diinisialisasi & diunggah ke GitHub
 
+## Mini Assignment
+Aplikasi profil mahasiswa diperluas dengan widget dasar (tanpa package eksternal):
+- **NIM**: ditambah baris `Text('NIM: 244107020128')` di dalam `Row` + `Icon(Icons.badge)`.
+- **Info tambahan**: `Text('Teknik Informatika')` (Row + `Icon(Icons.computer)`),
+  serta email `muhaaqil6002@gmail.com` sebagai teks italic abu-abu.
+- **Widget dipakai**: `Card`, `Padding`, `Column`, `Row`, `SizedBox`, `Icon`, `Text`.
+- `AppBar` + `Icons.school` + nama tetap dipertahankan.
+- File: `lib/main.dart` (lihat body `Scaffold`).
+
+## Kendala Setup
+Satu kendala nyata: **OneDrive memblokir proses build** (MSBuild/tooling
+Windows tidak bisa menulis ke dalam folder yang disinkronkan OneDrive).
+Akibatnya `flutter build` / `flutter run` tidak bisa dijalankan dari dalam
+folder `OneDrive/Documents/...` ini.
+
+Solusi jujur: source tetap di repo ini untuk version control & pengumpulan,
+sedangkan build/run dilakukan di folder di luar OneDrive (mis. `C:\flutter_course\week1`).
+Validasi yang berhasil di environment ini: `flutter analyze` → **No issues found!**
+Build/emulator belum dijalankan di sini karena keterbatasan tersebut di atas.
+
+> GAP: screenshot hasil aplikasi belum di-capture (tidak ada emulator/display
+> di environment). Jalankan sendiri:
+> ```bash
+> cd 01-week-1-mobile-development-ecosystem-flutter-refresh
+> flutter run
+> ```
+> lalu screenshot ke `screenshots/profile.png`.
+
 ## Bukti visual
 - `screenshots/` — capture hasil aplikasi di device/emulator
