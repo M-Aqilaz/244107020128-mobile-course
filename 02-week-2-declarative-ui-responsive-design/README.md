@@ -59,21 +59,71 @@ Mengembangkan dashboard menjadi halaman **Academic Overview** dengan ketentuan:
 | :---: | :---: |
 | ![Tugas Lebar Light](screenshot/tugas_wide_light.png) | ![Tugas Lebar Dark](screenshot/tugas_wide_landscape.png) |
 
-### Testing & Analisis
-* **`flutter analyze`:** `No issues found!`
-* **`flutter test`:** Lulus semua pengujian responsif dan toggle tema (`All tests passed!`).
-
 ---
 
 ## 4. AI Prompt Challenge
 
-1. **Prompt Desain (GridView vs LayoutBuilder + Column):** Memilih `LayoutBuilder` + `GridView` karena lebih simpel membagi kolom secara responsif tanpa perlu hitung lebar card manual.
-2. **Prompt Konsep (Expanded Overflow):** `Expanded` bakal error jika ditaruh di dalam parent dengan lebar tak terbatas (misal di dalam `SingleChildScrollView` horizontal).
-3. **Verifikasi AI:** Layout dipastikan tetap responsif di bawah 600px, teks tidak terpotong, dan widget yang digunakan stabil di Flutter.
+Eksplorasi dan verifikasi konsep UI menggunakan AI:
+
+### Challenge 1: Prompt Desain (GridView vs LayoutBuilder + Column)
+* **Prompt:** *"Bandingkan dua tata letak dashboard akademik untuk Flutter: versi GridView dan versi LayoutBuilder + Column. Jelaskan trade-off responsif dan aksesibilitasnya."*
+* **Keputusan:** Menggunakan kombinasi `LayoutBuilder` + `GridView.count(shrinkWrap: true)` di dalam `SingleChildScrollView` agar layout otomatis menyesuaikan 1 atau 2 kolom tanpa konflik scroll.
+![AI Prompt 1](screenshot/ai_prompt_1_desain.png)
+
+### Challenge 2: Prompt Konsep (Expanded Overflow di Row)
+* **Prompt:** *"Jelaskan kapan penggunaan Expanded justru menyebabkan overflow di dalam Row, beri contoh kode yang gagal dan perbaikannya."*
+* **Hasil:** `Expanded` error jika ditaruh di dalam parent dengan lebar tak terbatas (misal di dalam scroll horizontal). Solusinya adalah memberi constraint lebar pasti atau memakai `Flexible(fit: FlexFit.loose)`.
+![AI Prompt 2](screenshot/ai_prompt_2_konsep.png)
+
+### Challenge 3: Verification Prompt (Self-Audit AI)
+* **Prompt:** *"Periksa kembali rekomendasi layout di atas: apakah tetap responsif di bawah 600px, apakah mengurangi aksesibilitas, dan apakah ada widget yang tidak tersedia di Flutter stabil saat ini?"*
+* **Hasil:** Layout aman di bawah 600px (1 kolom penuh), aksesibilitas lengkap dengan `Semantics`, dan semua widget stabil.
+![AI Prompt 3](screenshot/ai_prompt_3_verifikasi.png)
 
 ---
 
-## 5. Refleksi
+## 5. Refactoring Challenge
+
+Setelah tugas inti berjalan, kode dirapikan sesuai kriteria codelab:
+1. **Ekstrak Widget Reusable:** Membuat widget `AcademicInfoCard` dan `ProfileHeaderCard` sehingga tidak ada duplikasi kode.
+2. **Dynamic Theming:** Mengganti warna dan teks hardcoded dengan `Theme.of(context).colorScheme` dan `Theme.of(context).textTheme`.
+3. **Pusat Breakpoint:** Mendefinisikan konstanta global tunggal: `const double kWideBreakpoint = 600.0;`.
+4. **Verifikasi Linter:** Menjalankan `flutter analyze` dengan hasil bersih tanpa warning maupun error.
+
+![Flutter Analyze](screenshot/flutter_analyze.png)
+
+---
+
+## 6. Testing Dasar (Widget Testing)
+
+Pengujian otomatis perilaku responsif dan interaksi dibuat pada [`test/widget_test.dart`](test/widget_test.dart):
+* **Layar Sempit (400x800):** Memverifikasi tampilan 1 kolom.
+* **Layar Lebar (1200x800):** Memverifikasi pembagian 2 kolom sejajar.
+* **Toggle Tema:** Memverifikasi perpindahan ikon dan tema saat `CupertinoSwitch` di-tap.
+
+Jalankan pengujian via terminal:
+```powershell
+flutter test
+```
+**Hasil Test (100% Passed):**
+![Flutter Test](screenshot/flutter_test.png)
+
+---
+
+## 7. Checklist Verifikasi
+
+| Item Verifikasi | Status | Keterangan |
+| :--- | :---: | :--- |
+| `flutter analyze` tidak menghasilkan error | [x] | Lulus (No issues found) |
+| `flutter test` lulus semua widget test responsif | [x] | Lulus (3/3 tests passed) |
+| Aplikasi dapat berjalan di layar sempit dan lebar | [x] | Responsif (1 kolom < 600, 2 kolom >= 600) |
+| Dark mode memiliki kontras dan teks terbaca | [x] | Mengikuti palet warna Material 3 |
+| Struktur widget dapat dijelaskan saat code review | [x] | Kode modular & terstruktur |
+| Screenshot dan folder `test/` tersimpan di repo | [x] | Lengkap di `screenshot/` & `test/` |
+
+---
+
+## 8. Refleksi
 
 1. **Imperative vs Declarative:** Imperative mengatur UI langkah demi langkah secara manual, sedangkan declarative mendeskripsikan UI berdasarkan state saat ini (`UI = f(state)`).
 2. **Kapan Expanded membantu vs error:** Membantu membagi sisa ruang kosong secara fleksibel, tapi menyebabkan error jika parent-nya tidak memiliki batas ukuran (*unbounded constraints*).
