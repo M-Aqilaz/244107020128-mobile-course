@@ -1,73 +1,74 @@
 # Laporan Praktikum — Minggu 04: Networking & REST API
 
-* **Nama:** Muhammad Aqil Azami
-* **NIM:** 244107020128
-* **Kelas:** TI-3H
-* **Mata Kuliah:** Pemrograman Mobile
+- **Nama:** Muhammad Aqil Azami
+- **NIM:** 244107020128
+- **Kelas:** TI-3H
+- **Mata Kuliah:** Pemrograman Mobile
 
 ---
 
-## 1. Praktikum 1: Dio dan Model Data
-Menyiapkan dependencies `dio`, `flutter_riverpod`, dan `go_router`. Membuat model `Post` dengan `fromJson` yang aman dari null (`?? ''`, `?? 0`), serta konfigurasi Dio terpusat di `lib/data/api_client.dart` dengan timeout 10 detik.
+## 1. Deskripsi Tugas & Fitur
+Di tugas minggu ke-4 ini, saya membuat aplikasi Flutter untuk mengambil dan mengelola data postingan dari REST API publik (JSONPlaceholder) dengan menerapkan Repository Pattern dan state management Riverpod.
+
+Fitur utama yang dibuat:
+1. **Klien Dio Terpusat:** Konfigurasi Dio dipusatkan pada `lib/data/api_client.dart` lengkap dengan base URL, timeout 10 detik, dan logging interceptor.
+2. **Model Data Aman Null:** Model `Post` dan `Comment` diparsing secara defensif (`?? ''` dan `?? 0`) agar aplikasi tidak crash saat ada field null atau hilang dari API.
+3. **Penanganan 4 State UI:** Tampilan `PostListPage` menangani 4 kondisi secara lengkap (loading spinner, daftar post berhasil dimuat, data kosong, dan tampilan error dengan tombol coba lagi).
+4. **Pagination (Infinite Scroll):** Mengambil data secara bertahap (10 item per halaman) saat pengguna menggulir layar ke bawah.
+5. **Halaman Detail & Komentar:** Menampilkan detail postingan yang dipilih beserta daftar komentar terkait lewat endpoint `/comments?postId={id}`.
 
 ---
 
-## 2. Praktikum 2: State Management & Error Handling
-Mengatur state daftar post menggunakan Riverpod (`AsyncNotifier` & `AsyncValue`). UI menangani 4 kondisi: loading, sukses, data kosong, dan error dengan tombol coba lagi.
+## 2. Hasil Tampilan Aplikasi
 
-| Loading | Sukses (Daftar Posts) |
+### A. Penanganan 4 State (Loading, Sukses, Kosong, Error)
+| Loading State | Sukses Menampilkan Data |
 | :---: | :---: |
 | ![Posts Loading](screenshots/01_posts_loading.png) | ![Posts Success](screenshots/02_posts_success.png) |
 
-| Data Kosong | Error & Coba Lagi |
+| Data Kosong | Error Koneksi & Tombol Coba Lagi |
 | :---: | :---: |
 | ![Posts Empty](screenshots/03_posts_empty.png) | ![Posts Error Retry](screenshots/04_posts_error_retry.png) |
 
----
-
-## 3. Praktikum 3: Pagination (Infinite Scroll)
-Menerapkan pagination 10 item per halaman dengan parameter `_page` dan `_limit`. Menggunakan `ScrollController` untuk memuat data berikutnya saat scroll mendekati bawah.
-
-| Infinite Scroll | Batas Akhir Data |
-| :---: | :---: |
-| ![Paged Infinite Scroll](screenshots/05_paged_infinite_scroll.png) | ![Paged End of List](screenshots/06_paged_end_of_list.png) |
+### B. Infinite Scroll & Halaman Detail
+| Scroll Memuat Data Berikutnya | Batas Akhir Data Termuat | Halaman Detail Post & Komentar |
+| :---: | :---: | :---: |
+| ![Paged Infinite Scroll](screenshots/05_paged_infinite_scroll.png) | ![Paged End of List](screenshots/06_paged_end_of_list.png) | ![Detail Post Page](screenshots/07_post_detail_page.png) |
 
 ---
 
-## 4. Refactoring & AI Challenge
-- **Refactoring:** Memisahkan widget item ke `lib/widgets/post_tile.dart`, memindahkan fungsi pesan error ke `lib/data/network_errors.dart`, dan membuat halaman detail `/post/:id` lengkap dengan komentar.
-- **AI Challenge:** Meminta AI membuat repository komentar (`GET /comments`), lalu memperbaiki kodenya agar pakai null-safety defensif dan Dio terpusat. Detail lengkap ada di [docs/ai_challenge.md](docs/ai_challenge.md).
-
-| Halaman Detail Post & Komentar |
-| :---: |
-| ![Detail Post Page](screenshots/07_post_detail_page.png) |
+## 3. Refactoring & Eksplorasi AI
+- **Pemisahan Komponen:** Item postingan dipisah ke `lib/widgets/post_tile.dart` dan fungsi penerjemah pesan error dipisah ke `lib/data/network_errors.dart` agar kode halaman tetap rapi dan mudah dibaca.
+- **Eksplorasi AI:** Saya mencoba meminta AI membuat repository untuk komentar. Kode awal dari AI masih memakai casting langsung tanpa proteksi null dan membuat instance `Dio()` baru di dalam fungsinya. Kode tersebut saya perbaiki agar menggunakan client Dio terpusat dan casting yang aman null. Rincian prompt dan kodenya dicatat di [docs/ai_challenge.md](docs/ai_challenge.md).
 
 ---
 
-## 5. Pengujian (Testing)
-Pengujian otomatis mencakup unit test model, error mapping, fake repository, dan widget test.
+## 4. Pengujian Otomatis
 
+Pengecekan kerapian sintaks dan pengujian otomatis dijalankan melalui terminal:
 ```powershell
 flutter analyze
 flutter test
 ```
 
-| Hasil Analyze & Test (10/10 Passed) |
+| Hasil Pengecekan Linter & Test (10/10 Passed) |
 | :---: |
 | ![Hasil Analyze dan Test](screenshots/08_flutter_analyze_test.png) |
 
+Seluruh 10 pengujian (model, error handler, fake repository, dan widget test) berhasil lulus dan linter bersih tanpa isu.
+
 ---
 
-## 6. Refleksi
+## 5. Refleksi
 
 1. **Kenapa UI dilarang panggil Dio langsung?**  
-   Biar kode tampilan nggak kecampur sama urusan jaringan. Kalau ada ganti URL atau format data, cukup ubah di repository tanpa perlu ngacak-ngacak UI.
+   Biar urusan tampilan tidak bercampur dengan urusan jaringan. Kalau sewaktu-waktu URL endpoint atau cara kirim datanya berubah, kita cukup ubah file repository saja tanpa perlu mengacak-acak kode widget UI.
 
 2. **Kapan pakai pagination client vs server?**  
-   Pagination client cukup kalau datanya sedikit (di bawah 50–100 data). Tapi kalau datanya ratusan atau ribuan, wajib pagination server biar hemat kuota dan aplikasi nggak lemot.
+   Pagination client cocok kalau jumlah datanya sedikit (misal di bawah 50–100 data). Tapi kalau datanya ada ratusan atau ribuan, wajib pakai pagination server (`_page` dan `_limit`) supaya hemat kuota internet dan HP pengguna tidak berat saat memuat data.
 
 3. **Gimana error repository jadi `AsyncError` tanpa try-catch di UI?**  
-   Karena method `build()` di `AsyncNotifier` otomatis menangkap exception dari repository dan mengubahnya jadi `AsyncError`. UI tinggal baca lewat `.when(error: ...)`.
+   Karena method `build()` di `AsyncNotifier` Riverpod secara otomatis menangkap exception yang dilempar oleh repository lalu mengubahnya jadi `AsyncError`. Di sisi UI, kita tinggal memanfaatkan fungsi `.when(error: ...)` untuk menampilkannya.
 
 4. **Bagian kode AI apa yang diperbaiki?**  
-   Model `Comment.fromJson` bawaan AI masih pakai casting langsung tanpa null-safety, jadi rawan crash kalau ada data null. Kodenya saya perbaiki pakai fallback nilai default dan disambungkan ke client Dio terpusat.
+   Model `Comment.fromJson` bawaan AI awalnya masih memakai casting langsung (`json['name'] as String`). Kalau dari API datanya null, aplikasi bakal langsung crash. Jadi saya perbaiki pakai fallback nilai default (`?? ''`) dan repository-nya saya sambungkan ke Dio terpusat bawaan project.

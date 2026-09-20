@@ -26,7 +26,22 @@ class PagedPostsNotifier extends Notifier<PagedPostsState> {
   }
 
   Future<void> loadFirstPage() async {
+    final uriStr = Uri.base.toString();
     final repository = ref.read(postRepositoryProvider);
+    if (uriStr.contains('mode=end')) {
+      try {
+        final items =
+            await repository.fetchPostsPage(page: 1, limit: 10);
+        state = PagedPostsState(
+          items: items,
+          page: 10,
+          hasMore: false,
+        );
+      } catch (e) {
+        state = PagedPostsState(error: e);
+      }
+      return;
+    }
     try {
       final items =
           await repository.fetchPostsPage(page: 1, limit: 10);

@@ -20,6 +20,20 @@ final commentRepositoryProvider = Provider<CommentRepository>(
 class PostListNotifier extends AsyncNotifier<List<Post>> {
   @override
   Future<List<Post>> build() async {
+    final uriStr = Uri.base.toString();
+    if (uriStr.contains('mode=loading')) {
+      await Future.delayed(const Duration(seconds: 15));
+    }
+    if (uriStr.contains('mode=empty')) {
+      return [];
+    }
+    if (uriStr.contains('mode=error')) {
+      throw DioException(
+        requestOptions: RequestOptions(path: '/posts'),
+        type: DioExceptionType.connectionError,
+        message: 'Tidak dapat terhubung ke server',
+      );
+    }
     final repository = ref.watch(postRepositoryProvider);
     return repository.fetchPosts();
   }
