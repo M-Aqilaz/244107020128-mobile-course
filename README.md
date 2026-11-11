@@ -16,6 +16,9 @@ dan bukti visual (`screenshots/`).
 - `06-week-6-authentication-security-fcm/` — secure storage & Firebase Cloud Messaging
 - `07-week-7-clean-architecture/` — refactoring feature-first Clean Architecture
 - `08-week-8-mid-project-review/` — mid-project review, code review, CI/CD, & evaluasi AI
+- `09-week-9-ai-assisted-development/` — AI-assisted development, vibe coding, search filter, & AI code review
+- `10-week-10-ai-feature-integration/` — integrasi fitur AI chat assistant, streaming token, privacy guard, & offline fallback
+- `11-week-11-performance-optimization/` — optimasi performa, DevTools CPU/memory profiling, const widget, repaint boundary, & lazy loading
 - `notes/` — reflections, learning-journal, resources
 - `portfolio-summary.md` — ringkasan akhir semester
 
