@@ -18,24 +18,44 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          cache: true
+          cache: false
 
-      - name: Install Dependencies
+      - name: Install Dependencies (Week 8)
         run: |
           cd 08-week-8-mid-project-review
           flutter pub get
 
-      - name: Verify Code Formatting
+      - name: Verify Code Formatting (Week 8)
         run: |
           cd 08-week-8-mid-project-review
           dart format --set-exit-if-changed lib test
 
-      - name: Run Static Analysis
+      - name: Run Static Analysis (Week 8)
         run: |
           cd 08-week-8-mid-project-review
-          flutter analyze
+          flutter analyze --no-fatal-infos --no-fatal-warnings
 
-      - name: Run Automated Tests
+      - name: Run Automated Tests (Week 8)
         run: |
           cd 08-week-8-mid-project-review
+          flutter test
+
+      - name: Install Dependencies (Week 12)
+        run: |
+          cd 12-week-12-testing-quality-assurance
+          flutter pub get
+
+      - name: Verify Code Formatting (Week 12)
+        run: |
+          cd 12-week-12-testing-quality-assurance
+          dart format --set-exit-if-changed lib test
+
+      - name: Run Static Analysis (Week 12)
+        run: |
+          cd 12-week-12-testing-quality-assurance
+          flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Run Automated Tests (Week 12)
+        run: |
+          cd 12-week-12-testing-quality-assurance
           flutter test

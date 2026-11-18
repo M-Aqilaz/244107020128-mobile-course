@@ -19,6 +19,7 @@ dan bukti visual (`screenshots/`).
 - `09-week-9-ai-assisted-development/` — AI-assisted development, vibe coding, search filter, & AI code review
 - `10-week-10-ai-feature-integration/` — integrasi fitur AI chat assistant, streaming token, privacy guard, & offline fallback
 - `11-week-11-performance-optimization/` — optimasi performa, DevTools CPU/memory profiling, const widget, repaint boundary, & lazy loading
+- `12-week-12-testing-quality-assurance/` — pengujian dan jaminan kualitas, unit test, fake repository, widget test, & integration test
 - `notes/` — reflections, learning-journal, resources
 - `portfolio-summary.md` — ringkasan akhir semester
 
