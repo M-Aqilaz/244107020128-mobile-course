@@ -54,24 +54,16 @@ jobs:
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
           echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
 
+      - name: Accept Android Licenses & Ensure SDK 36
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0" || true
+
       - name: Make Gradle Wrapper Executable
         run: chmod +x android/gradlew
 
       - name: Build Android APK (Release)
-        run: |
-          set +e
-          flutter build apk --release --android-skip-build-dependency-validation -v > build_apk.log 2>&1
-          BUILD_STATUS=$?
-          if [ $BUILD_STATUS -ne 0 ]; then
-            echo "::error::--- BUILD APK FAILED (Exit Code $BUILD_STATUS) ---"
-            grep -A 8 "An issue was found when checking AAR metadata:" build_apk.log | while IFS= read -r line; do
-              echo "::error::$line"
-            done
-            grep -C 3 -E "\* What went wrong:|\* Exception is:" build_apk.log | head -n 25 | while IFS= read -r line; do
-              echo "::error::$line"
-            done
-            exit $BUILD_STATUS
-          fi
+        run: flutter build apk --release --android-skip-build-dependency-validation
 
       - name: Build Android App Bundle (Release)
         run: flutter build appbundle --release --android-skip-build-dependency-validation

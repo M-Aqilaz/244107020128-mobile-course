@@ -6,10 +6,11 @@ plugins {
 
 android {
     namespace = "com.example.campus_notify"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -19,7 +20,7 @@ android {
         applicationId = "com.example.campus_notify"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
+        minSdk = flutter.minSdkVersion
         targetSdk = 35
         multiDexEnabled = true
         // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
@@ -48,3 +49,8 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+}
+

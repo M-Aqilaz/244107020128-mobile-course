@@ -18,6 +18,9 @@ jobs:
   test-and-build:
     name: Flutter CI/CD (Test & Android Build)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 13-week-13-ci-cd-automation
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -51,24 +54,16 @@ jobs:
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
           echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
 
+      - name: Accept Android Licenses & Ensure SDK 36
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0" || true
+
       - name: Make Gradle Wrapper Executable
         run: chmod +x android/gradlew
 
       - name: Build Android APK (Release)
-        run: |
-          set +e
-          flutter build apk --release --android-skip-build-dependency-validation -v > build_apk.log 2>&1
-          BUILD_STATUS=$?
-          if [ $BUILD_STATUS -ne 0 ]; then
-            echo "::error::--- BUILD APK FAILED (Exit Code $BUILD_STATUS) ---"
-            grep -A 8 "An issue was found when checking AAR metadata:" build_apk.log | while IFS= read -r line; do
-              echo "::error::$line"
-            done
-            grep -C 3 -E "\* What went wrong:|\* Exception is:" build_apk.log | head -n 25 | while IFS= read -r line; do
-              echo "::error::$line"
-            done
-            exit $BUILD_STATUS
-          fi
+        run: flutter build apk --release --android-skip-build-dependency-validation
 
       - name: Build Android App Bundle (Release)
         run: flutter build appbundle --release --android-skip-build-dependency-validation
@@ -78,7 +73,32 @@ jobs:
         with:
           name: android-builds
           path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
+            13-week-13-ci-cd-automation/build/app/outputs/flutter-apk/app-release.apk
+            13-week-13-ci-cd-automation/build/app/outputs/bundle/release/app-release.aab
           if-no-files-found: error
           retention-days: 7
+
+  verify-previous-milestones:
+    name: Regression Verification (Week 8 & Week 12)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: false
+
+      - name: Verify Week 8
+        run: |
+          cd 08-week-8-mid-project-review
+          flutter pub get
+          flutter test
+
+      - name: Verify Week 12
+        run: |
+          cd 12-week-12-testing-quality-assurance
+          flutter pub get
+          flutter test
