@@ -58,7 +58,20 @@ jobs:
         run: chmod +x android/gradlew
 
       - name: Build Android APK (Release)
-        run: flutter build apk --release --android-skip-build-dependency-validation
+        run: |
+          set +e
+          flutter build apk --release --android-skip-build-dependency-validation -v > build_apk.log 2>&1
+          BUILD_STATUS=$?
+          if [ $BUILD_STATUS -ne 0 ]; then
+            echo "::error::--- BUILD APK FAILED (Exit Code $BUILD_STATUS) ---"
+            grep -E "FAILURE:|What went wrong|Caused by:|e: |error:|FAILED|Exception" build_apk.log | tail -n 25 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+            tail -n 25 build_apk.log | while IFS= read -r line; do
+              echo "::error::LOG: $line"
+            done
+            exit $BUILD_STATUS
+          fi
 
       - name: Build Android App Bundle (Release)
         run: flutter build appbundle --release --android-skip-build-dependency-validation
