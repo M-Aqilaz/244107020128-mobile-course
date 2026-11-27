@@ -46,16 +46,29 @@ jobs:
       - name: Run Automated Tests & Coverage
         run: flutter test --coverage
 
+      - name: Flutter Doctor Check
+        run: flutter doctor -v
+
       - name: Make Gradle Wrapper Executable
         run: chmod +x android/gradlew
 
       - name: Build Android APK (Release)
-        run: flutter build apk --release
+        run: |
+          set +e
+          flutter build apk --release -v 2>&1 | tee build_apk.log
+          BUILD_STATUS=${PIPESTATUS[0]}
+          if [ $BUILD_STATUS -ne 0 ]; then
+            echo "::error::flutter build apk failed with status $BUILD_STATUS"
+            echo "==== LAST 100 LINES OF BUILD LOG ===="
+            tail -n 100 build_apk.log
+            exit $BUILD_STATUS
+          fi
 
       - name: Build Android App Bundle (Release)
         run: flutter build appbundle --release
 
       - name: Upload Android Artifacts
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: android-builds
@@ -64,3 +77,11 @@ jobs:
             build/app/outputs/bundle/release/app-release.aab
           if-no-files-found: error
           retention-days: 7
+
+      - name: Upload Build Log on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-failure-log
+          path: build_apk.log
+          if-no-files-found: warn
