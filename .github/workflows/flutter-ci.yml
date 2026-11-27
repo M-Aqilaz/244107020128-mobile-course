@@ -61,10 +61,13 @@ jobs:
           flutter build apk --release -v > build_apk.log 2>&1
           BUILD_STATUS=$?
           if [ $BUILD_STATUS -ne 0 ]; then
-            echo "### Build APK Failed (Exit Code $BUILD_STATUS)" >> $GITHUB_STEP_SUMMARY
-            echo '```text' >> $GITHUB_STEP_SUMMARY
-            tail -n 120 build_apk.log >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "::error::--- BUILD APK FAILED (Exit Code $BUILD_STATUS) ---"
+            grep -E "FAILURE:|What went wrong|Caused by:|e: |error:|FAILED|Exception" build_apk.log | tail -n 20 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+            tail -n 20 build_apk.log | while IFS= read -r line; do
+              echo "::error::LOG: $line"
+            done
             exit $BUILD_STATUS
           fi
 
