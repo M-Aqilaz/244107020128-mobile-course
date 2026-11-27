@@ -58,12 +58,13 @@ jobs:
       - name: Build Android APK (Release)
         run: |
           set +e
-          flutter build apk --release -v 2>&1 | tee build_apk.log
-          BUILD_STATUS=${PIPESTATUS[0]}
+          flutter build apk --release -v > build_apk.log 2>&1
+          BUILD_STATUS=$?
           if [ $BUILD_STATUS -ne 0 ]; then
-            echo "::error::flutter build apk failed with status $BUILD_STATUS"
-            echo "==== LAST 100 LINES OF BUILD LOG ===="
-            tail -n 100 build_apk.log
+            echo "### Build APK Failed (Exit Code $BUILD_STATUS)" >> $GITHUB_STEP_SUMMARY
+            echo '```text' >> $GITHUB_STEP_SUMMARY
+            tail -n 120 build_apk.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
             exit $BUILD_STATUS
           fi
 
