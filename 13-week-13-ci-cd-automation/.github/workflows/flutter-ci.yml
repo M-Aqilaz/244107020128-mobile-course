@@ -59,11 +59,8 @@ jobs:
           BUILD_STATUS=$?
           if [ $BUILD_STATUS -ne 0 ]; then
             echo "::error::--- BUILD APK FAILED (Exit Code $BUILD_STATUS) ---"
-            grep -E "FAILURE:|What went wrong|Caused by:|e: |error:|FAILED|Exception" build_apk.log | tail -n 20 | while IFS= read -r line; do
+            grep -A 5 -E "Caused by:" build_apk.log | head -n 30 | while IFS= read -r line; do
               echo "::error::$line"
-            done
-            tail -n 20 build_apk.log | while IFS= read -r line; do
-              echo "::error::LOG: $line"
             done
             exit $BUILD_STATUS
           fi
