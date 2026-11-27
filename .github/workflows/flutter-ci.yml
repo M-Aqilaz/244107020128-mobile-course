@@ -49,6 +49,9 @@ jobs:
       - name: Run Automated Tests & Coverage
         run: flutter test --coverage
 
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x android/gradlew
+
       - name: Build Android APK (Release)
         run: flutter build apk --release
 
