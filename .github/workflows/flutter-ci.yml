@@ -64,7 +64,7 @@ jobs:
           BUILD_STATUS=$?
           if [ $BUILD_STATUS -ne 0 ]; then
             echo "::error::--- BUILD APK FAILED (Exit Code $BUILD_STATUS) ---"
-            grep -E "^e: " build_apk.log | head -n 25 | while IFS= read -r line; do
+            grep -A 8 "An issue was found when checking AAR metadata:" build_apk.log | while IFS= read -r line; do
               echo "::error::$line"
             done
             grep -C 3 -E "\* What went wrong:|\* Exception is:" build_apk.log | head -n 25 | while IFS= read -r line; do
